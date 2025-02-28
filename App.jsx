@@ -21,8 +21,18 @@ export default function App() {
             backgroundColor: '#24225a',
           },
           headerTintColor: '#fff',
+          headerStyle: {
+            backgroundColor: '#24225a',
+            height: Platform.OS === 'ios' ? 110 : 80, // iOS와 Android에 따라 높이 조정
+          },
+          headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
+            fontSize: 18,
+          },
+          // 헤더 왼쪽(뒤로가기 버튼)에 여백 추가
+          headerLeftContainerStyle: {
+            paddingLeft: 15,
           },
         }}
       >
@@ -37,11 +47,6 @@ export default function App() {
           name="AudioGuide" 
           component={AudioGuideScreen} 
           options={{ title: '전시 해설' }} 
-        />
-        <Stack.Screen 
-          name="Reservation" 
-          component={ReservationScreen} 
-          options={{ title: '예약' }} 
         />
         <Stack.Screen 
           name="RecommendedRoute" 
