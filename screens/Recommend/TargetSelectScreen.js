@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { mapTargetToEnglish } from "../utils/mappingUtils";
 
 const TargetSelectScreen = ({ route, navigation }) => {
   const { selectedTime } = route.params;
-  const [selectedTarget, setSelectedTarget] = useState(null);
 
-  // ✅ 선택 즉시 다음 화면으로 이동하는 함수
   const handleSelectTarget = (target) => {
-    setSelectedTarget(target); // 선택된 값 저장 (선택 효과용)
+    const englishTarget = mapTargetToEnglish(target);
     navigation.navigate("RouteResult", {
       selectedTime,
-      selectedTarget: target,
+      selectedTarget: englishTarget,
     });
   };
 
@@ -22,8 +21,8 @@ const TargetSelectScreen = ({ route, navigation }) => {
       {targets.map((target) => (
         <TouchableOpacity
           key={target}
-          style={[styles.optionButton, selectedTarget === target]}
-          onPress={() => handleSelectTarget(target)} // ✅ 바로 이동
+          style={styles.optionButton}
+          onPress={() => handleSelectTarget(target)}
         >
           <Text style={styles.optionText}>{target}</Text>
         </TouchableOpacity>
