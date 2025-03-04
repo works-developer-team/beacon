@@ -1,10 +1,11 @@
-import React from "react";
-import { TouchableOpacity, Image } from "react-native";
+import React, { useEffect } from "react";
+import { TouchableOpacity, Image, Platform } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from "react-redux";
 import store from "./screens/store/store";
+import Orientation from "react-native-orientation-locker";
 
 import MainScreen from "./screens/MainScreen";
 import AudioGuideScreen from "./screens/AudioGuideScreen";
@@ -19,7 +20,7 @@ import ExhibitionDetailScreen from "./screens/Recommend/ExhibitionDetail";
 // Stack 네비게이터 생성
 const Stack = createStackNavigator();
 
-// 홈 아이콘 버튼 (기존 아이콘 버전)
+// 홈 아이콘 버튼
 const HomeButton = ({ navigation }) => (
   <TouchableOpacity
     onPress={() => navigation.navigate("Main")}
@@ -29,7 +30,7 @@ const HomeButton = ({ navigation }) => (
   </TouchableOpacity>
 );
 
-// 홈 이미지 버튼 (home.png 버전)
+// 홈 이미지 버튼
 const HomeImageButton = ({ navigation }) => (
   <TouchableOpacity
     onPress={() => navigation.navigate("Main")}
@@ -43,6 +44,16 @@ const HomeImageButton = ({ navigation }) => (
 );
 
 export default function App() {
+  useEffect(() => {
+    // ✅ 앱이 시작될 때 세로모드 고정
+    Orientation.lockToPortrait();
+
+    // (선택) 필요시, 앱 종료 시 모든 방향 허용하도록 해제 가능
+    return () => {
+      Orientation.unlockAllOrientations();
+    };
+  }, []);
+
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -61,7 +72,6 @@ export default function App() {
             headerLeftContainerStyle: {
               paddingLeft: 15,
             },
-            // 특정 화면에서만 home.png로 변경
             headerRight: () => {
               const useImageButtonScreens = [
                 "RecommendedRoute",
