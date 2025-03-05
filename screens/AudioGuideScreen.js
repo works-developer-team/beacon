@@ -9,6 +9,8 @@ import {
   PermissionsAndroid,
   Platform,
   Dimensions,
+  Modal,
+  Pressable,
 } from "react-native";
 import BleManager from "react-native-ble-manager";
 import { useLazyGetExhibitionsByBeaconQuery } from "./api/exhibitionApi";
@@ -34,7 +36,7 @@ const mockExhibitions = [
     title: "카오스 진자",
     description: "다중 진자가 어떻게 움직이는지 관찰해 보세요.",
     imageUrl:
-      "http://gnscience.ktidc.kr/cmmn/fileView?path=/files/item/11/&physical=A73A21F22C0A4E6A8B1072330F8BFE8F.jpg",
+      "http://gnscience.ktidc.kr/cmmn/fileView?path=/files/item/10/&physical=DADED78515BD40E2A7683A9115D0FD31.jpg",
     experience: [
       "레버를 잡고 진자를 회전시킵니다.",
       "진자 운동의 규칙성과 불규칙성을 찾아 봅니다.",
@@ -68,6 +70,8 @@ const AudioGuideScreen = () => {
   const [selectedExhibition, setSelectedExhibition] = useState(
     mockExhibitions[0]
   ); // 초기값 설정 (첫 번째 전시물)
+  const [isImageModalVisible, setImageModalVisible] = useState(false); // 이미지 모달 상태
+  console.log(isImageModalVisible);
 
   const [getExhibitionsByBeacon] = useLazyGetExhibitionsByBeaconQuery();
 
@@ -181,11 +185,48 @@ const AudioGuideScreen = () => {
       </ScrollView>
 
       {/* 선택된 전시물의 메인 이미지 (상단 전체 너비) */}
-      <Image
-        source={{ uri: selectedExhibition.imageUrl }}
-        style={styles.mainImage}
-        resizeMode="cover"
-      />
+      {/* 선택된 전시물의 메인 이미지 - 클릭 시 원본 보기 */}
+      <TouchableOpacity
+        onPress={() => {
+          setImageModalVisible(true);
+          console.log("모달 열림?", true);
+        }}
+      >
+        <Image
+          source={{ uri: selectedExhibition.imageUrl }}
+          style={styles.mainImage}
+          resizeMode="cover"
+        />
+      </TouchableOpacity>
+
+      {/* 이미지 확대 모달 */}
+      {/* 이미지 모달 */}
+      <Modal
+        visible={isImageModalVisible}
+        transparent={true}
+        animationType="fade"
+      >
+        <View style={styles.modalContainer}>
+          {/* 모달 닫기 버튼 */}
+          <Pressable
+            style={styles.modalBackground}
+            onPress={() => setImageModalVisible(false)}
+          />
+          <View style={styles.modalContent}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setImageModalVisible(false)}
+            >
+              <Text style={styles.closeButtonText}>✕</Text>
+            </TouchableOpacity>
+            <Image
+              source={{ uri: selectedExhibition.imageUrl }}
+              style={styles.modalImage}
+              resizeMode="contain"
+            />
+          </View>
+        </View>
+      </Modal>
 
       {/* 상세정보 카드 (아래 영역) */}
       {/* 상세 정보 카드 */}
@@ -297,6 +338,54 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#555",
     lineHeight: 20,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.9)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalBackground: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  modalContent: {
+    width: "90%",
+    height: "80%",
+    backgroundColor: "black",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  closeButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    zIndex: 10,
+    backgroundColor: "black",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+  },
+  closeButton: {
+    position: "absolute",
+    top: 15, // 살짝 아래로
+    right: 15, // 살짝 안쪽으로
+    zIndex: 10,
+    backgroundColor: "rgba(0,0,0,0.7)", // 약간 투명한 배경
+    paddingVertical: 10, // 터치 영역 확대
+    paddingHorizontal: 15, // 터치 영역 확대
+    borderRadius: 20, // 동글하게 만들어도 좋음
+  },
+  closeButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 24, // 글자 크기 키움
+  },
+
+  modalImage: {
+    width: "100%",
+    height: "100%",
   },
 });
 
