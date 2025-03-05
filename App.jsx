@@ -93,7 +93,7 @@ export default function App() {
           <Stack.Screen
             name="AudioGuide"
             component={AudioGuideScreen}
-            options={{ title: "전시 해설" }}
+            options={{ title: " " }}
           />
           <Stack.Screen
             name="RecommendedRoute"
