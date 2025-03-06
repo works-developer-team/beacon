@@ -12,7 +12,6 @@ import AudioGuideScreen from "./screens/AudioGuideScreen";
 import RecommendedRouteScreen from "./screens/Recommend/RecommendedRouteScreen";
 import MuseumMapScreen from "./screens/MuseumMapScreen";
 import ExhibitionIntroScreen from "./screens/ExhibitionIntroScreen";
-import PopularExhibitionScreen from "./screens/PopularExhibitionScreen";
 import TargetSelectScreen from "./screens/Recommend/TargetSelectScreen";
 import RouteResultScreen from "./screens/Recommend/RouteResultScreen";
 import ExhibitionDetailScreen from "./screens/Recommend/ExhibitionDetail";
@@ -124,11 +123,6 @@ export default function App() {
             name="ExhibitionIntro"
             component={ExhibitionIntroScreen}
             options={{ title: "전시물 소개" }}
-          />
-          <Stack.Screen
-            name="PopularExhibition"
-            component={PopularExhibitionScreen}
-            options={{ title: "인기 전시물" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

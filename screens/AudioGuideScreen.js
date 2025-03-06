@@ -21,8 +21,7 @@ const mockExhibitions = [
     id: "1",
     title: "굴러가는 시간",
     description: "공이 하나씩 굴러가며 현재 시간을 표시하는 전시물입니다.",
-    imageUrl:
-      "http://gnscience.ktidc.kr/cmmn/fileView?path=/files/item/11/&physical=A73A21F22C0A4E6A8B1072330F8BFE8F.jpg",
+    imageUrl: "https://www.kosm.or.kr/images/sub/permanent_info03_img.png",
     experience: [
       "매분 공이 하나씩 굴러가며 현재 시각을 표시합니다.",
       "매 5분마다 인형들이 나와서 공연을 합니다.",
@@ -36,7 +35,7 @@ const mockExhibitions = [
     title: "카오스 진자",
     description: "다중 진자가 어떻게 움직이는지 관찰해 보세요.",
     imageUrl:
-      "http://gnscience.ktidc.kr/cmmn/fileView?path=/files/item/10/&physical=DADED78515BD40E2A7683A9115D0FD31.jpg",
+      "https://www.sciencecenter.go.kr/scipia/File/110062/CKEDITOR_ATTATCHMENTS/6015/6015.png",
     experience: [
       "레버를 잡고 진자를 회전시킵니다.",
       "진자 운동의 규칙성과 불규칙성을 찾아 봅니다.",
@@ -51,7 +50,7 @@ const mockExhibitions = [
     title: "테슬라 전기 실험",
     description: "테슬라 전기 실험입니다.",
     imageUrl:
-      "http://gnscience.ktidc.kr/cmmn/fileView?path=/files/item/11/&physical=A73A21F22C0A4E6A8B1072330F8BFE8F.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2lEGHQooDfD-0WgNak4mNj_Wnp46MVULSZA&s",
     experience: [
       "레버를 잡고 진자를 회전시킵니다.",
       "진자 운동의 규칙성과 불규칙성을 찾아 봅니다.",
