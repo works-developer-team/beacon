@@ -360,6 +360,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   footer: {
+    marginBottom: 30,
     padding: 16,
     borderTopColor: "#333180",
   },
