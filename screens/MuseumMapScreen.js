@@ -237,8 +237,7 @@
 //   },
 // });
 
-// export default MuseumMapScreen;
-import React, { useState, useEffect } from "react";
+// export default MuseumMapScreen;import React, { useState, useEffect } from "react";
 import {
   View,
   ImageBackground,
@@ -249,10 +248,11 @@ import {
 } from "react-native";
 import { exhibits } from "./data/exhibits";
 import { sections } from "./data/sections";
+import { useState } from "react";
 
-const mapImage = require("../assets/map.png"); // 지도 이미지
+const mapImage = require("../assets/map5.png"); // 지도 이미지
 
-const mapOriginalWidth = 524; // 원본 이미지 가로 크기
+const mapOriginalWidth = 514; // 원본 이미지 가로 크기
 const mapOriginalHeight = 1218; // 원본 이미지 세로 크기
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -268,7 +268,7 @@ const MuseumMapScreen = () => {
   const [selectedExhibit, setSelectedExhibit] = useState(null);
   const [mapSize, setMapSize] = useState({
     width: screenWidth,
-    height: screenHeight,
+    height: (screenWidth / mapOriginalWidth) * mapOriginalHeight, // 가로 기준 비율 유지
   });
 
   // 지도 크기 업데이트 (onLayout 활용)
@@ -294,7 +294,10 @@ const MuseumMapScreen = () => {
       {/* 지도 이미지 배경 */}
       <ImageBackground
         source={mapImage}
-        style={styles.mapImage}
+        style={[
+          styles.mapImage,
+          { width: mapSize.width, height: mapSize.height },
+        ]}
         resizeMode="contain"
         onLayout={handleMapLayout} // 지도 크기 측정
       >
@@ -313,7 +316,7 @@ const MuseumMapScreen = () => {
                 },
               ]}
               onPress={() => handleExhibitPress(exhibit)}
-            ></TouchableOpacity>
+            />
           );
         })}
 
@@ -343,7 +346,7 @@ const styles = StyleSheet.create({
   },
   mapImage: {
     width: "100%",
-    height: "100%",
+    height: "auto", // 비율 유지하도록 변경
   },
   currentLocationMarker: {
     position: "absolute",
@@ -356,18 +359,13 @@ const styles = StyleSheet.create({
   },
   exhibitMarker: {
     position: "absolute",
-    width: 14,
-    height: 14,
+    width: 13,
+    height: 13,
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "white",
-  },
-  markerText: {
-    fontSize: 10,
-    color: "#000",
-    fontWeight: "bold",
+    borderColor: "gray",
   },
 });
 
