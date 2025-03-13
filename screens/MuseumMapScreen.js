@@ -238,41 +238,98 @@
 // });
 
 // export default MuseumMapScreen;
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  ImageBackground,
+  StyleSheet,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import { exhibits } from "./data/exhibits";
+import { sections } from "./data/sections";
 
-import React, { useEffect, useState } from "react";
-import { View, Image, StyleSheet, Dimensions } from "react-native";
+const mapImage = require("../assets/map.png"); // 지도 이미지
 
-// 지도 이미지 경로 (assets 폴더에 map.png 있어야 함)
-const mapImage = require("../assets/map.png");
+const mapOriginalWidth = 524; // 원본 이미지 가로 크기
+const mapOriginalHeight = 1218; // 원본 이미지 세로 크기
 
-const { width, height } = Dimensions.get("window");
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-// 더미 현재 위치 좌표 (X, Y는 지도 이미지 위의 좌표 기준)
-const dummyLocation = { x: 150, y: 300 }; // 여기는 테스트용, 실제 비콘 매칭 필요
+// 섹션별 색상 가져오기
+const getSectionColor = (section) => {
+  const sectionData = sections.find((s) => s.id === section);
+  return sectionData ? sectionData.color : "#FFFFFF";
+};
 
 const MuseumMapScreen = () => {
-  const [currentPosition, setCurrentPosition] = useState(dummyLocation); // 기본값은 더미 위치
+  const [currentPosition, setCurrentPosition] = useState({ x: 262, y: 609 });
+  const [selectedExhibit, setSelectedExhibit] = useState(null);
+  const [mapSize, setMapSize] = useState({
+    width: screenWidth,
+    height: screenHeight,
+  });
 
-  useEffect(() => {
-    // TODO: 비콘 데이터를 기반으로 위치 업데이트 로직 추가 가능
-    // setCurrentPosition({ x: 새로운 x좌표, y: 새로운 y좌표 });
-  }, []);
+  // 지도 크기 업데이트 (onLayout 활용)
+  const handleMapLayout = (event) => {
+    const { width, height } = event.nativeEvent.layout;
+    setMapSize({ width, height });
+  };
+
+  // 화면 크기에 맞춰 위치 변환 함수 (실제 지도 크기 기준)
+  const getScaledPosition = (originalX, originalY) => {
+    return {
+      x: (originalX / mapOriginalWidth) * mapSize.width,
+      y: (originalY / mapOriginalHeight) * mapSize.height,
+    };
+  };
+
+  const handleExhibitPress = (exhibit) => {
+    setSelectedExhibit(exhibit);
+  };
 
   return (
     <View style={styles.container}>
-      {/* 전체 지도 이미지 */}
-      <Image source={mapImage} style={styles.mapImage} />
+      {/* 지도 이미지 배경 */}
+      <ImageBackground
+        source={mapImage}
+        style={styles.mapImage}
+        resizeMode="contain"
+        onLayout={handleMapLayout} // 지도 크기 측정
+      >
+        {/* 전시물 마커 */}
+        {exhibits.map((exhibit) => {
+          const { x, y } = getScaledPosition(exhibit.x, exhibit.y);
+          return (
+            <TouchableOpacity
+              key={exhibit.id}
+              style={[
+                styles.exhibitMarker,
+                {
+                  left: x - 6, // 마커 크기 보정 (중앙 정렬)
+                  top: y - 6,
+                  backgroundColor: getSectionColor(exhibit.section),
+                },
+              ]}
+              onPress={() => handleExhibitPress(exhibit)}
+            ></TouchableOpacity>
+          );
+        })}
 
-      {/* 현재 위치 표시 (빨간 점) */}
-      <View
-        style={[
-          styles.currentLocationMarker,
-          {
-            left: currentPosition.x,
-            top: currentPosition.y,
-          },
-        ]}
-      />
+        {/* 현재 위치 표시 */}
+        <View
+          style={[
+            styles.currentLocationMarker,
+            {
+              left:
+                getScaledPosition(currentPosition.x, currentPosition.y).x - 10,
+              top:
+                getScaledPosition(currentPosition.x, currentPosition.y).y - 10,
+            },
+          ]}
+        />
+      </ImageBackground>
     </View>
   );
 };
@@ -280,13 +337,13 @@ const MuseumMapScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: "relative",
     backgroundColor: "#101322",
+    alignItems: "center",
+    justifyContent: "center",
   },
   mapImage: {
-    width: width,
+    width: "100%",
     height: "100%",
-    resizeMode: "contain",
   },
   currentLocationMarker: {
     position: "absolute",
@@ -296,6 +353,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: "white",
+  },
+  exhibitMarker: {
+    position: "absolute",
+    width: 14,
+    height: 14,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "white",
+  },
+  markerText: {
+    fontSize: 10,
+    color: "#000",
+    fontWeight: "bold",
   },
 });
 
