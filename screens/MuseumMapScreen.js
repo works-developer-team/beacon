@@ -248,7 +248,8 @@ import {
 } from "react-native";
 import { exhibits } from "./data/exhibits";
 import { sections } from "./data/sections";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useBeaconScanner from "./hooks/useBeaconScanner";
 
 const mapImage = require("../assets/map5.png"); // 지도 이미지
 
@@ -270,6 +271,7 @@ const MuseumMapScreen = () => {
     width: screenWidth,
     height: (screenWidth / mapOriginalWidth) * mapOriginalHeight, // 가로 기준 비율 유지
   });
+  const { scanForDevices, devices } = useBeaconScanner();
 
   // 지도 크기 업데이트 (onLayout 활용)
   const handleMapLayout = (event) => {
@@ -288,6 +290,48 @@ const MuseumMapScreen = () => {
   const handleExhibitPress = (exhibit) => {
     setSelectedExhibit(exhibit);
   };
+
+  useEffect(() => {
+    // 📌 화면 진입 시 즉시 비콘 스캔 실행
+    scanForDevices();
+
+    // 📌 10초마다 scanForDevices 실행
+    const interval = setInterval(() => {
+      scanForDevices();
+    }, 10000);
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 정리
+  }, []);
+
+  useEffect(() => {
+    if (devices.length === 0) return;
+
+    // 📌 GIWORKS_ 로 시작하는 비콘만 필터링
+    const giworksBeacons = devices
+      .filter((device) => device.name && device.name.startsWith("GIWORKS_"))
+      .sort((a, b) => b.rssi - a.rssi) // RSSI 기준 정렬 (강한 신호 우선)
+      .slice(0, 3); // 상위 3개 선택
+
+    if (giworksBeacons.length > 0) {
+      // 📌 선택된 비콘들의 좌표 추출
+      const beaconPositions = giworksBeacons
+        .map((beacon) => exhibits.find((ex) => ex.id === beacon.name))
+        .filter((exhibit) => exhibit !== undefined);
+
+      if (beaconPositions.length > 0) {
+        // 📌 중앙 위치 계산
+        const avgX =
+          beaconPositions.reduce((sum, ex) => sum + ex.x, 0) /
+          beaconPositions.length;
+        const avgY =
+          beaconPositions.reduce((sum, ex) => sum + ex.y, 0) /
+          beaconPositions.length;
+
+        // 📌 위치 업데이트
+        setCurrentPosition({ x: avgX, y: avgY });
+      }
+    }
+  }, [devices]);
 
   return (
     <View style={styles.container}>

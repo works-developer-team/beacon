@@ -39,7 +39,7 @@ export const exhibits = [
   { id: "A9", name: "카오스 진자", code: 109, x: 307, y: 820, section: "A" },
   {
     id: "A10",
-    name: "스택치기: 관성체험",
+    name: "GIWORKS_158",
     code: 110,
     x: 306,
     y: 797,
@@ -64,7 +64,7 @@ export const exhibits = [
     section: "A",
   },
   {
-    id: "A15",
+    id: "GIWORKS_038",
     name: "사랑의 편광판",
     code: 115,
     x: 395,
@@ -80,7 +80,14 @@ export const exhibits = [
     y: 809,
     section: "A",
   },
-  { id: "A18", name: "풍선 마이크", code: 118, x: 410, y: 786, section: "A" },
+  {
+    id: "GIWORKS_022",
+    name: "풍선 마이크",
+    code: 118,
+    x: 410,
+    y: 786,
+    section: "A",
+  },
   {
     id: "A19",
     name: "공 균형 잡기: 베르누이 원리",
@@ -201,7 +208,7 @@ export const exhibits = [
     section: "B",
   },
   {
-    id: "B8",
+    id: "GIWORKS_031",
     name: "빛을 합치고 합치면 어떻게 될까?",
     code: 148,
     x: 458,
@@ -241,7 +248,7 @@ export const exhibits = [
     section: "B",
   },
   {
-    id: "B13",
+    id: "GIWORKS_192",
     name: "적외선 발견실험",
     code: 1200,
     x: 459,
@@ -358,7 +365,7 @@ export const exhibits = [
   // D 섹션 - 파란색
   {
     id: "D1",
-    name: "열을 가하지 않고 물을 끓일 수 있을까?",
+    name: "GIWORKS_026",
     code: 168,
     x: 410,
     y: 460,
@@ -464,7 +471,7 @@ export const exhibits = [
     section: "E",
   },
   {
-    id: "E9",
+    id: "GIWORKS_203",
     name: "인공 위성은 어떻게 지구 주위를 돌 수 있을까?",
     code: 184,
     x: 100,
@@ -472,7 +479,7 @@ export const exhibits = [
     section: "E",
   },
   {
-    id: "E10",
+    id: "GIWORKS_204",
     name: "지각이 움직이면 어떤 일이 일어날까?",
     code: 185,
     x: 230,
