@@ -251,7 +251,7 @@ import { sections } from "./data/sections";
 import { useEffect, useState } from "react";
 import useBeaconScanner from "./hooks/useBeaconScanner";
 
-const mapImage = require("../assets/map5.png"); // 지도 이미지
+const mapImage = require("../assets/555.png"); // 지도 이미지
 
 const mapOriginalWidth = 514; // 원본 이미지 가로 크기
 const mapOriginalHeight = 1218; // 원본 이미지 세로 크기
@@ -403,8 +403,8 @@ const styles = StyleSheet.create({
   },
   exhibitMarker: {
     position: "absolute",
-    width: 13,
-    height: 13,
+    width: 10,
+    height: 10,
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",

@@ -4,16 +4,16 @@ import BleManager from "react-native-ble-manager";
 
 const useBeaconScanner = () => {
   const [devices, setDevices] = useState([]);
+  const [isScanning, setIsScanning] = useState(false); // 중복 실행 방지 플래그
 
   useEffect(() => {
     BleManager.start({ showAlert: false })
       .then(() => {
-        console.log("✅ BLE Manager Started");
         if (Platform.OS === "android") {
           requestAndroidPermissions();
         }
       })
-      .catch((error) => console.log("❌ BLE Manager 초기화 실패:", error));
+      .catch((error) => console.log("BLE Manager 초기화 실패:", error));
   }, []);
 
   const requestAndroidPermissions = async () => {
@@ -23,10 +23,7 @@ const useBeaconScanner = () => {
         PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       ]);
-      console.log("✅ BLE 권한 요청 결과:", granted);
-    } catch (error) {
-      console.log("❌ BLE 권한 요청 실패:", error);
-    }
+    } catch (error) {}
   };
 
   const parseIBeaconData = (device) => {
@@ -63,16 +60,20 @@ const useBeaconScanner = () => {
   };
 
   const scanForDevices = async () => {
+    if (isScanning) {
+      console.log("⚠️ BLE 스캔이 이미 실행 중입니다. 중복 실행 방지됨.");
+      return;
+    }
+
+    setIsScanning(true); // 스캔 시작 표시
+
     try {
-      console.log("🚀 BLE 스캔 시작");
-      BleManager.scan([], 10, true)
-        .then(() => console.log("✅ 스캔 진행 중..."))
-        .catch((error) => console.log("❌ 스캔 오류:", error));
+      await BleManager.scan([], 10, true);
 
       setTimeout(async () => {
         try {
           const peripherals = await BleManager.getDiscoveredPeripherals([]);
-          console.log("🔎 전체 발견된 장치:", peripherals);
+          console.log("📡 검색된 비콘 목록:", peripherals);
 
           const giworksDevices = peripherals
             .filter(
@@ -89,14 +90,15 @@ const useBeaconScanner = () => {
                 minor,
               };
             });
+
           setDevices(giworksDevices);
-          console.log("🎯 감지된 GIWORKS 비콘:", giworksDevices);
         } catch (error) {
-          console.error("❌ BLE 목록 가져오기 실패", error);
+        } finally {
+          setIsScanning(false); // 스캔 종료 후 플래그 초기화
         }
-      }, 12000);
+      }, 12000); // 12초 후 결과 처리
     } catch (error) {
-      console.error("스캔 시작 오류 발생", error);
+      setIsScanning(false); // 오류 발생 시에도 플래그 초기화
     }
   };
 
