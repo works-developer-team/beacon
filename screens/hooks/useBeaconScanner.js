@@ -68,35 +68,31 @@ const useBeaconScanner = () => {
     setIsScanning(true); // 스캔 시작 표시
 
     try {
-      await BleManager.scan([], 10, true);
+      await BleManager.scan([], 13, true);
 
       setTimeout(async () => {
         try {
           const peripherals = await BleManager.getDiscoveredPeripherals([]);
           console.log("📡 검색된 비콘 목록:", peripherals);
 
-          const giworksDevices = peripherals
-            .filter(
-              (device) => device.name && device.name.startsWith("GIWORKS")
-            )
-            .map((device) => {
-              const { uuid, major, minor } = parseIBeaconData(device);
-              return {
-                name: device.name,
-                id: device.id,
-                rssi: device.rssi,
-                uuid,
-                major,
-                minor,
-              };
-            });
+          const giworksDevices = peripherals.map((device) => {
+            const { uuid, major, minor } = parseIBeaconData(device);
+            return {
+              name: device.name,
+              id: device.id,
+              rssi: device.rssi,
+              uuid,
+              major,
+              minor,
+            };
+          });
 
           setDevices(giworksDevices);
         } catch (error) {
         } finally {
           setIsScanning(false); // 스캔 종료 후 플래그 초기화
         }
-      }, 12000); // 12초 후 결과 처리
+      }, 15000); // 12초 후 결과 처리
     } catch (error) {
       setIsScanning(false); // 오류 발생 시에도 플래그 초기화
     }

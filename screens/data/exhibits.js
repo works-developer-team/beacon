@@ -348,7 +348,7 @@ export const exhibits = [
     section: "E",
   },
   {
-    id: "E2",
+    id: "E9",
     name: "움직이는땅",
     code: 175,
     x: 199,
@@ -397,7 +397,7 @@ export const exhibits = [
     section: "E",
   },
   {
-    id: "E9",
+    id: "E2",
     name: "같은부피,다른무게?",
     code: 184,
     x: 378,
