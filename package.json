@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.4",
+    "@react-native/gradle-plugin": "^0.78.0",
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/stack": "^7.1.1",
     "@reduxjs/toolkit": "^2.6.0",
@@ -18,7 +19,9 @@
     "react": "19.0.0",
     "react-native": "0.78.0",
     "react-native-ble-manager": "^12.1.4",
+    "react-native-bootsplash": "^6.3.3",
     "react-native-gesture-handler": "^2.24.0",
+    "react-native-linear-gradient": "^2.8.3",
     "react-native-orientation-locker": "^1.7.0",
     "react-native-safe-area-context": "^5.2.0",
     "react-native-screens": "^4.9.1",
